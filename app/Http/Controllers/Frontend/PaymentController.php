@@ -13,27 +13,34 @@ class PaymentController extends Controller
      */
     public function checkout(Request $request)
     {
-        $cart = session()->get('cart', []);
-        $selectedKeys = $request->input('selected_items', []);
-        $selectedItems = [];
-        $total = 0;
-        foreach ($selectedKeys as $key) {
-            if (isset($cart[$key])) {
-                $selectedItems[$key] = $cart[$key];
-                $total += $cart[$key]['price'] * $cart[$key]['quantity'];
+        if ($request->isMethod('post')) {
+            $cart = session()->get('cart', []);
+            $selectedKeys = $request->input('selected_items', []);
+            $selectedItems = [];
+            $total = 0;
+    
+            foreach ($selectedKeys as $key) {
+                if (isset($cart[$key])) {
+                    $selectedItems[$key] = $cart[$key];
+                    $total += $cart[$key]['price'] * $cart[$key]['quantity'];
+                }
             }
+    
+            if (empty($selectedItems)) {
+                return redirect()->back()->with('danger', 'Please select at least one item to checkout.');
+            }
+            session()->put('selected_cart', $selectedItems);
+            session()->put('selected_total', $total);
         }
+        $selectedItems = session('selected_cart', []);
+        $total = session('selected_total', 0);
+    
         if (empty($selectedItems)) {
-            return redirect()->back()->with('danger', 'Please select at least one item to checkout.');
+            return redirect()->route('cart.show')->with('danger', 'Checkout session expired. Please select items again.');
         }
-        session()->put('selected_cart', $selectedItems);
-        session()->put('selected_total', $total);
-        return view('website.frontend.checkout', [
-            'selectedItems' => $selectedItems,
-            'total' => $total,
-        ]);
+    
+        return view('website.frontend.checkout', compact('selectedItems', 'total'));
     }
-
     /**
      * store payment and the order details.
      */
@@ -76,6 +83,4 @@ class PaymentController extends Controller
         session()->forget(['selected_cart', 'selected_total', 'shipping_details', 'order_items', 'order_total']);
         return view('website.frontend.order-confirmation', compact('paymentId', 'shipping', 'items', 'total', 'orderId'));
     }
-    
-
 }

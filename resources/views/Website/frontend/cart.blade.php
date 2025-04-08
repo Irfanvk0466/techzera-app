@@ -55,7 +55,6 @@
                 @php $itemTotal = $item['price'] * $item['quantity']; @endphp
                 <tr>
                   <td>
-                    {{-- ✅ This checkbox will be submitted via the checkout form --}}
                     <input 
                       type="checkbox" 
                       form="checkout-form"
@@ -124,7 +123,7 @@
         </div>
       </div>
 
-      <form action="{{ route('checkout') }}" method="POST" id="checkout-form" class="shopping-cart__totals-wrapper mt-4 mt-lg-0" style="min-width: 300px;">
+      <form action="{{ route('checkout.selected') }}" method="POST" id="checkout-form" class="shopping-cart__totals-wrapper mt-4 mt-lg-0" style="min-width: 300px;">
         @csrf
         <div class="sticky-content border rounded p-4 shadow-sm">
           <div class="shopping-cart__totals mb-3">
