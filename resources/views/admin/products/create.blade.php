@@ -1,12 +1,12 @@
 @extends('layout.navigation.master')
 
-@section('title', 'Pharma System')
+@section('title', 'Create Products')
 
 @section('content-header')
 <div class="row mb-2">
     <div class="col-sm-12">
         <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.products.index') }}">Home</a></li>
             <li class="breadcrumb-item active">Add Product</li>
         </ol>
     </div>
