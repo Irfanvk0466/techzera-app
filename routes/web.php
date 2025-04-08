@@ -29,7 +29,3 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth.admin')->prefix('admin')->name('admin.')->group(function () {
     Route::resource('products', ProductController::class);
 });
-
-Route::get('/razorpay-test', function () {
-    return view('test'); // points to resources/views/test.blade.php
-});
