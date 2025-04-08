@@ -97,7 +97,7 @@
                 </thead>
                 <tbody>
                   @php $total = 0; @endphp
-                  @foreach($cart as $item)
+                  @foreach($selectedItems as $item)
                     @php
                       $itemTotal = $item['price'] * $item['quantity'];
                       $total += $itemTotal;
